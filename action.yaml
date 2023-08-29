@@ -29,15 +29,25 @@ runs:
         distribution: oracle
         java-version: "17"
 
+    - name: debug1
+      run: echo "here"
+      shell: bash
+
     - name: Setup Bazel
       # trunk-ignore(semgrep): Trust third-party `bazelbuild` GH Action
       uses: bazelbuild/setup-bazelisk@v2
 
-    - name: Setup Tools
+    - name: debug2
+      run: echo "here"
       shell: bash
-      run: |
-        sudo apt-get update
-        sudo apt-get install jq
+
+    - name: Setup jq
+      # trunk-ignore(semgrep): Trust third-party action to install JQ. Source code: https://github.com/dcarbone/install-jq-action/
+      uses: dcarbone/install-jq-action@v1.0.1
+
+    - name: debug2
+      run: echo "here"
+      shell: bash
 
     - name: Prerequisites
       id: prerequisites
@@ -48,6 +58,10 @@ runs:
         TARGET_BRANCH: ${{ inputs.target-branch }}
         WORKSPACE_PATH: ${{ inputs.bazel-workspace-path }}
 
+    - name: debug2
+      run: echo "here"
+      shell: bash
+
     - name: Compute Impacted Targets
       id: compute-impacted-targets
       run: ${GITHUB_ACTION_PATH}/src/scripts/compute_impacted_targets.sh
@@ -57,6 +71,10 @@ runs:
         PR_BRANCH: ${{ github.head_ref }}
         VERBOSE: ${{ inputs.verbose }}
         WORKSPACE_PATH: ${{ steps.prerequisites.outputs.workspace_path }}
+
+    - name: debug2
+      run: echo "here"
+      shell: bash
 
     - name: Upload Impacted Targets
       run: ${GITHUB_ACTION_PATH}/src/scripts/upload_impacted_targets.sh
